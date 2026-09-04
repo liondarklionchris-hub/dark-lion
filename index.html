@@ -51,25 +51,31 @@
 
     /* Snake */
     #snakeCanvas {
-      background: #0d0d1a;
-      border: 2px solid #ffcc00;
-      border-radius: 8px;
-      margin: 15px auto;
-      display: block;
-      touch-action: none;
+      background: #0d0d1a; border: 2px solid #ffcc00; border-radius: 8px;
+      margin: 15px auto; display: block; touch-action: none;
     }
     #snakeScore { color: #ffcc00; font-weight: bold; }
     .snake-controls {
-      display: grid;
-      grid-template-columns: repeat(3, 50px);
-      grid-template-rows: repeat(2, 50px);
-      gap: 6px;
-      justify-content: center;
-      margin-top: 10px;
+      display: grid; grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(2, 50px);
+      gap: 6px; justify-content: center; margin-top: 10px;
     }
     .snake-btn {
       background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00;
       border-radius: 8px; font-size: 1.3em; cursor: pointer;
+    }
+
+    /* Course de voiture */
+    #carCanvas {
+      background: #333; border: 2px solid #ffcc00; border-radius: 8px;
+      margin: 15px auto; display: block; touch-action: none;
+    }
+    #carScore { color: #ffcc00; font-weight: bold; }
+    .car-controls {
+      display: flex; justify-content: center; gap: 20px; margin-top: 10px;
+    }
+    .car-btn {
+      background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00;
+      border-radius: 8px; font-size: 1.5em; width: 60px; height: 50px; cursor: pointer;
     }
 
     /* Chatbot */
@@ -130,6 +136,17 @@
   </div>
 
   <div class="container">
+    <h2>🏎️ Course de voiture</h2>
+    <p id="carScore">Score : 0</p>
+    <canvas id="carCanvas" width="240" height="320"></canvas>
+    <button class="reset" onclick="startCarGame()">Démarrer</button>
+    <div class="car-controls">
+      <button class="car-btn" onclick="moveCar('left')">←</button>
+      <button class="car-btn" onclick="moveCar('right')">→</button>
+    </div>
+  </div>
+
+  <div class="container">
     <h2>🤖 Assistant IA</h2>
     <div id="chatBox"></div>
     <input type="text" id="chatInput" placeholder="Écris un message...">
@@ -151,7 +168,6 @@
     let gameOver = false;
     const boardEl = document.getElementById("board");
     const statusEl = document.getElementById("gameStatus");
-
     function drawBoard() {
       boardEl.innerHTML = "";
       boardState.forEach((val, i) => {
@@ -208,7 +224,6 @@
     const gridSize = 14;
     const tileCount = canvas.width / gridSize;
     let snake, velocity, food, snakeScore, snakeRunning, snakeLoop;
-
     function initSnake() {
       snake = [{x: 7, y: 7}];
       velocity = {x: 0, y: 0};
@@ -216,32 +231,24 @@
       snakeScore = 0;
       document.getElementById("snakeScore").textContent = "Score : 0";
     }
-
     function randomFood() {
-      return {
-        x: Math.floor(Math.random() * tileCount),
-        y: Math.floor(Math.random() * tileCount)
-      };
+      return { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
     }
-
     function setDirection(dir) {
       if (dir === 'up' && velocity.y !== 1) velocity = {x:0, y:-1};
       if (dir === 'down' && velocity.y !== -1) velocity = {x:0, y:1};
       if (dir === 'left' && velocity.x !== 1) velocity = {x:-1, y:0};
       if (dir === 'right' && velocity.x !== -1) velocity = {x:1, y:0};
     }
-
     function startSnake() {
       if (snakeLoop) clearInterval(snakeLoop);
       initSnake();
       snakeRunning = true;
       snakeLoop = setInterval(snakeStep, 130);
     }
-
     function snakeStep() {
       if (!snakeRunning) return;
       const head = {x: snake[0].x + velocity.x, y: snake[0].y + velocity.y};
-
       if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.some(s => s.x === head.x && s.y === head.y)) {
         snakeRunning = false;
         clearInterval(snakeLoop);
@@ -251,7 +258,6 @@
         ctx.fillText("Perdu ! Score : " + snakeScore, canvas.width/2, canvas.height/2);
         return;
       }
-
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         snakeScore++;
@@ -260,25 +266,104 @@
       } else {
         snake.pop();
       }
-
       ctx.fillStyle = "#0d0d1a";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       ctx.fillStyle = "#ff3355";
       ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
-
       ctx.fillStyle = "#ffcc00";
       snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
     }
-
     document.addEventListener("keydown", (e) => {
       if (e.key === "ArrowUp") setDirection('up');
       if (e.key === "ArrowDown") setDirection('down');
       if (e.key === "ArrowLeft") setDirection('left');
       if (e.key === "ArrowRight") setDirection('right');
     });
-
     initSnake();
+
+    // ----- COURSE DE VOITURE -----
+    const carCanvas = document.getElementById("carCanvas");
+    const carCtx = carCanvas.getContext("2d");
+    const roadWidth = carCanvas.width;
+    const laneCount = 3;
+    const laneWidth = roadWidth / laneCount;
+    let playerLane, obstacles, carScore, carRunning, carLoop, carSpeed;
+
+    function initCar() {
+      playerLane = 1;
+      obstacles = [];
+      carScore = 0;
+      carSpeed = 3;
+      document.getElementById("carScore").textContent = "Score : 0";
+    }
+
+    function moveCar(dir) {
+      if (!carRunning) return;
+      if (dir === 'left' && playerLane > 0) playerLane--;
+      if (dir === 'right' && playerLane < laneCount - 1) playerLane++;
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") moveCar('left');
+      if (e.key === "ArrowRight") moveCar('right');
+    });
+
+    function startCarGame() {
+      if (carLoop) clearInterval(carLoop);
+      initCar();
+      carRunning = true;
+      carLoop = setInterval(carStep, 40);
+    }
+
+    function carStep() {
+      if (!carRunning) return;
+
+      if (Math.random() < 0.04) {
+        obstacles.push({ lane: Math.floor(Math.random() * laneCount), y: -40 });
+      }
+
+      obstacles.forEach(o => o.y += carSpeed);
+      obstacles = obstacles.filter(o => o.y < carCanvas.height + 40);
+
+      const carY = carCanvas.height - 70;
+      const carHitbox = { lane: playerLane, top: carY, bottom: carY + 50 };
+
+      for (const o of obstacles) {
+        if (o.lane === playerLane && o.y + 40 > carHitbox.top && o.y < carHitbox.bottom) {
+          carRunning = false;
+          clearInterval(carLoop);
+          carCtx.fillStyle = "#ffcc00";
+          carCtx.font = "18px Arial";
+          carCtx.textAlign = "center";
+          carCtx.fillText("Crash ! Score : " + carScore, carCanvas.width/2, carCanvas.height/2);
+          return;
+        }
+      }
+
+      carScore++;
+      document.getElementById("carScore").textContent = "Score : " + carScore;
+
+      carCtx.fillStyle = "#333";
+      carCtx.fillRect(0, 0, carCanvas.width, carCanvas.height);
+      carCtx.strokeStyle = "#ffcc00";
+      carCtx.setLineDash([10, 10]);
+      for (let i = 1; i < laneCount; i++) {
+        carCtx.beginPath();
+        carCtx.moveTo(i * laneWidth, 0);
+        carCtx.lineTo(i * laneWidth, carCanvas.height);
+        carCtx.stroke();
+      }
+      carCtx.setLineDash([]);
+
+      carCtx.fillStyle = "#ff3355";
+      obstacles.forEach(o => {
+        carCtx.fillRect(o.lane * laneWidth + 10, o.y, laneWidth - 20, 40);
+      });
+
+      carCtx.fillStyle = "#ffcc00";
+      carCtx.fillRect(playerLane * laneWidth + 10, carY, laneWidth - 20, 50);
+    }
+    initCar();
 
     // ----- CHATBOT -----
     const chatBox = document.getElementById("chatBox");
@@ -312,3 +397,4 @@
 
 </body>
 </html>
+
