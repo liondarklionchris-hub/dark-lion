@@ -1,124 +1,208 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Dark Lion 🦁</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-      color: white;
-      margin: 0;
-      padding: 40px 20px;
-    }
-    .container {
-      background: rgba(20, 20, 40, 0.8);
-      padding: 40px;
-      border-radius: 15px;
-      border: 2px solid #ffcc00;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
-      max-width: 500px;
-      margin: 0 auto 30px auto;
-    }
-    .profile-pic {
-      width: 150px; height: 150px; border-radius: 50%;
-      object-fit: cover; border: 3px solid #ffcc00; margin-bottom: 15px;
-    }
-    h1 { color: #ffcc00; font-size: 2.5em; margin: 0; text-shadow: 0 0 10px #ffcc00; }
-    h2 { color: #ffcc00; margin-top: 0; }
-    .subtitle { color: #888; font-size: 1.1em; margin-top: 10px; }
-    p { color: #ccc; line-height: 1.6; margin-top: 20px; }
-    a { color: #ffcc00; text-decoration: none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dark Lion AI 🦁</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #0d0d1a;
+    color: white;
+    padding-bottom: 30px;
+  }
+  /* Barre du haut */
+  header {
+    background: #16162a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 2px solid #ffcc00;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header .left, header .right { display: flex; align-items: center; gap: 12px; }
+  header .icon { font-size: 1.3em; cursor: pointer; }
+  header .title { font-weight: bold; color: #ffcc00; font-size: 1.1em; }
+  #coinCount { background: #1a1a2e; border: 1px solid #ffcc00; border-radius: 20px; padding: 3px 10px; font-size: 0.9em; }
 
-    .board {
-      display: grid; grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px);
-      gap: 8px; justify-content: center; margin: 20px auto;
-    }
-    .cell {
-      background: #1a1a2e; border: 2px solid #ffcc00; border-radius: 8px;
-      font-size: 2.5em; color: #ffcc00; display: flex; align-items: center;
-      justify-content: center; cursor: pointer;
-    }
-    .cell:hover { background: #2a2a4e; }
-    #gameStatus { color: #ffcc00; font-weight: bold; margin-top: 10px; }
-    button.reset {
-      background: #ffcc00; color: #111; border: none; padding: 10px 20px;
-      border-radius: 8px; font-weight: bold; margin-top: 15px; cursor: pointer;
-    }
+  /* Onglets */
+  .tabs {
+    display: flex;
+    background: #16162a;
+    border-bottom: 2px solid #333;
+    position: sticky;
+    top: 52px;
+    z-index: 9;
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    color: #888;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  .tab.active { color: #ffcc00; border-bottom: 3px solid #ffcc00; font-weight: bold; }
 
-    #snakeCanvas {
-      background: #0d0d1a; border: 2px solid #ffcc00; border-radius: 8px;
-      margin: 15px auto; display: block; touch-action: none;
-    }
-    #snakeScore { color: #ffcc00; font-weight: bold; }
-    .snake-controls {
-      display: grid; grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(2, 50px);
-      gap: 6px; justify-content: center; margin-top: 10px;
-    }
-    .snake-btn {
-      background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00;
-      border-radius: 8px; font-size: 1.3em; cursor: pointer;
-    }
+  .page { display: none; padding: 20px 16px; }
+  .page.active { display: block; }
 
-    #carCanvas {
-      background: #333; border: 2px solid #ffcc00; border-radius: 8px;
-      margin: 15px auto; display: block; touch-action: none;
-    }
-    #carScore { color: #ffcc00; font-weight: bold; }
-    .car-controls {
-      display: flex; justify-content: center; gap: 20px; margin-top: 10px;
-    }
-    .car-btn {
-      background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00;
-      border-radius: 8px; font-size: 1.5em; width: 60px; height: 50px; cursor: pointer;
-    }
+  .container {
+    background: rgba(20, 20, 40, 0.8);
+    padding: 30px 20px;
+    border-radius: 15px;
+    border: 2px solid #ffcc00;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+    max-width: 500px;
+    margin: 0 auto 20px auto;
+  }
+  .profile-pic {
+    width: 130px; height: 130px; border-radius: 50%;
+    object-fit: cover; border: 3px solid #ffcc00; margin-bottom: 12px;
+  }
+  h1 { color: #ffcc00; font-size: 2em; text-shadow: 0 0 10px #ffcc00; }
+  h2 { color: #ffcc00; margin-bottom: 10px; }
+  .subtitle { color: #888; margin-top: 8px; }
+  p { color: #ccc; line-height: 1.6; margin-top: 15px; }
+  a { color: #ffcc00; text-decoration: none; }
 
-    #chatBox {
-      background: #0d0d1a; border: 1px solid #444; border-radius: 8px;
-      height: 200px; overflow-y: auto; padding: 10px; text-align: left;
-      margin-bottom: 10px; font-size: 0.95em;
-    }
-    #chatBox p { margin: 6px 0; }
-    .msg-user { color: #fff; }
-    .msg-bot { color: #ffcc00; }
-    #chatInput {
-      width: 70%; padding: 8px; border-radius: 6px; border: 1px solid #ffcc00;
-      background: #1a1a2e; color: white;
-    }
-    #chatSend {
-      background: #ffcc00; color: #111; border: none; padding: 8px 14px;
-      border-radius: 6px; font-weight: bold; cursor: pointer;
-    }
+  /* Grille de jeux (comme la liste de l'appli) */
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .game-card {
+    background: #16162a;
+    border: 2px solid #ffcc00;
+    border-radius: 12px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .game-card .emoji { font-size: 2em; }
+  .game-card .label { color: #ffcc00; margin-top: 6px; font-size: 0.9em; }
 
-    footer { text-align: center; color: #666; margin-top: 40px; font-size: 0.9em; }
-  </style>
+  .board {
+    display: grid; grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px);
+    gap: 8px; justify-content: center; margin: 20px auto;
+  }
+  .cell {
+    background: #1a1a2e; border: 2px solid #ffcc00; border-radius: 8px;
+    font-size: 2.5em; color: #ffcc00; display: flex; align-items: center;
+    justify-content: center; cursor: pointer;
+  }
+  #gameStatus { color: #ffcc00; font-weight: bold; margin-top: 10px; }
+  button.reset {
+    background: #ffcc00; color: #111; border: none; padding: 10px 20px;
+    border-radius: 8px; font-weight: bold; margin-top: 15px; cursor: pointer;
+  }
+
+  #snakeCanvas {
+    background: #0d0d1a; border: 2px solid #ffcc00; border-radius: 8px;
+    margin: 15px auto; display: block; touch-action: none;
+  }
+  .snake-controls {
+    display: grid; grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(2, 50px);
+    gap: 6px; justify-content: center; margin-top: 10px;
+  }
+  .snake-btn {
+    background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00;
+    border-radius: 8px; font-size: 1.3em; cursor: pointer;
+  }
+
+  #carCanvas {
+    background: #333; border: 2px solid #ffcc00; border-radius: 8px;
+    margin: 15px auto; display: block; touch-action: none;
+  }
+  .car-controls { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
+  .car-btn {
+    background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00;
+    border-radius: 8px; font-size: 1.5em; width: 60px; height: 50px; cursor: pointer;
+  }
+
+  #chatBox {
+    background: #0d0d1a; border: 1px solid #444; border-radius: 8px;
+    height: 250px; overflow-y: auto; padding: 10px; text-align: left;
+    margin-bottom: 10px; font-size: 0.95em;
+  }
+  #chatBox p { margin: 6px 0; }
+  .msg-user { color: #fff; }
+  .msg-bot { color: #ffcc00; }
+  .chat-input-row { display: flex; gap: 8px; max-width: 500px; margin: 0 auto; }
+  #chatInput {
+    flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #ffcc00;
+    background: #1a1a2e; color: white;
+  }
+  #chatSend {
+    background: #ffcc00; color: #111; border: none; padding: 10px 16px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+  }
+
+  footer { text-align: center; color: #666; margin-top: 30px; font-size: 0.85em; }
+  .hidden { display: none; }
+</style>
 </head>
 <body>
 
+<header>
+  <div class="left">
+    <span class="icon">☰</span>
+    <span class="title">🦁 Dark Lion AI</span>
+  </div>
+  <div class="right">
+    <span id="coinCount">🪙 0</span>
+    <span class="icon">🔔</span>
+    <span class="icon">😀</span>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" data-page="accueil">Accueil</div>
+  <div class="tab" data-page="jeux">🎮 Jeux</div>
+  <div class="tab" data-page="chat">💬 Chat</div>
+  <div class="tab" data-page="contact">Contact</div>
+</div>
+
+<!-- PAGE ACCUEIL -->
+<div class="page active" id="page-accueil">
   <div class="container">
     <img src="profile.jpg" alt="Photo de profil" class="profile-pic">
     <h1>🦁 Dark Lion</h1>
     <p class="subtitle">Mon univers digital commence ici</p>
     <p>Le début de l'aventure ne fait que commencer</p>
   </div>
-
   <div class="container">
     <h2>À propos</h2>
     <p>Je suis en train d'apprendre à coder avec Termux. Ce site est mon premier projet !</p>
   </div>
+</div>
 
-  <div class="container">
-    <h2>🎮 Morpion contre l'IA</h2>
+<!-- PAGE JEUX -->
+<div class="page" id="page-jeux">
+  <div class="game-grid" id="gameMenu">
+    <div class="game-card" data-game="morpion"><div class="emoji">❌</div><div class="label">Morpion</div></div>
+    <div class="game-card" data-game="snake"><div class="emoji">🐍</div><div class="label">Snake</div></div>
+    <div class="game-card" data-game="voiture"><div class="emoji">🏎️</div><div class="label">Voiture</div></div>
+  </div>
+
+  <div class="container hidden" id="game-morpion">
+    <h2>❌ Morpion contre l'IA</h2>
     <div class="board" id="board"></div>
     <p id="gameStatus">À toi de jouer (X) !</p>
     <button class="reset" onclick="resetGame()">Recommencer</button>
   </div>
 
-  <div class="container">
+  <div class="container hidden" id="game-snake">
     <h2>🐍 Snake</h2>
-    <p id="snakeScore">Score : 0</p>
+    <p id="snakeScore" style="color:#ffcc00;font-weight:bold;">Score : 0</p>
     <canvas id="snakeCanvas" width="280" height="280"></canvas>
     <button class="reset" onclick="startSnake()">Démarrer</button>
     <div class="snake-controls">
@@ -131,9 +215,9 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container hidden" id="game-voiture">
     <h2>🏎️ Course de voiture</h2>
-    <p id="carScore">Score : 0</p>
+    <p id="carScore" style="color:#ffcc00;font-weight:bold;">Score : 0</p>
     <canvas id="carCanvas" width="240" height="320"></canvas>
     <button class="reset" onclick="startCarGame()">Démarrer</button>
     <div class="car-controls">
@@ -141,257 +225,284 @@
       <button class="car-btn" onclick="moveCar('right')">→</button>
     </div>
   </div>
+</div>
 
-  <div class="container">
+<!-- PAGE CHAT -->
+<div class="page" id="page-chat">
+  <div class="container" style="max-width:600px;">
     <h2>🤖 Assistant IA</h2>
     <div id="chatBox"></div>
-    <input type="text" id="chatInput" placeholder="Écris un message...">
-    <button id="chatSend" onclick="sendMessage()">Envoyer</button>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Écris un message...">
+      <button id="chatSend" onclick="sendMessage()">Envoyer</button>
+    </div>
   </div>
+</div>
 
+<!-- PAGE CONTACT -->
+<div class="page" id="page-contact">
   <div class="container">
     <h2>Contact</h2>
     <p>Envie de me contacter ? Appelle-moi au : <a href="tel:+22892200997">+228 92 20 09 97</a></p>
   </div>
+</div>
 
-  <footer>
-    <p>© 2026 Dark Lion — Codé avec Termux</p>
-  </footer>
+<footer><p>© 2026 Dark Lion — Codé avec Termux</p></footer>
 
-  <script>
-    // ----- MORPION -----
-    let boardState = Array(9).fill("");
-    let gameOver = false;
-    const boardEl = document.getElementById("board");
-    const statusEl = document.getElementById("gameStatus");
-    function drawBoard() {
-      boardEl.innerHTML = "";
-      boardState.forEach((val, i) => {
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.textContent = val;
-        cell.onclick = () => playerMove(i);
-        boardEl.appendChild(cell);
-      });
+<script>
+  // ----- NAVIGATION ONGLETS -----
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById("page-" + tab.dataset.page).classList.add("active");
+    });
+  });
+
+  // ----- MENU JEUX -----
+  document.querySelectorAll(".game-card").forEach(card => {
+    card.addEventListener("click", () => {
+      document.querySelectorAll(".game-card").forEach(c => c.parentElement).forEach(()=>{});
+      document.getElementById("gameMenu").classList.add("hidden");
+      document.querySelectorAll("#page-jeux .container").forEach(c => c.classList.add("hidden"));
+      document.getElementById("game-" + card.dataset.game).classList.remove("hidden");
+    });
+  });
+
+  // ----- PIECES -----
+  let coins = 0;
+  const coinCountEl = document.getElementById("coinCount");
+  function addCoins(n) {
+    coins += n;
+    coinCountEl.textContent = "🪙 " + coins;
+  }
+
+  // ----- MORPION -----
+  let boardState = Array(9).fill("");
+  let gameOver = false;
+  const boardEl = document.getElementById("board");
+  const statusEl = document.getElementById("gameStatus");
+  function drawBoard() {
+    boardEl.innerHTML = "";
+    boardState.forEach((val, i) => {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.textContent = val;
+      cell.onclick = () => playerMove(i);
+      boardEl.appendChild(cell);
+    });
+  }
+  function checkWinner(b) {
+    const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    for (const [a,b2,c] of lines) {
+      if (b[a] && b[a] === b[b2] && b[a] === b[c]) return b[a];
     }
-    function checkWinner(b) {
-      const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-      for (const [a,b2,c] of lines) {
-        if (b[a] && b[a] === b[b2] && b[a] === b[c]) return b[a];
-      }
-      if (b.every(cell => cell !== "")) return "Égalité";
-      return null;
-    }
-    function playerMove(i) {
-      if (gameOver || boardState[i] !== "") return;
-      boardState[i] = "X";
-      drawBoard();
-      const result = checkWinner(boardState);
-      if (result) return endGame(result);
-      statusEl.textContent = "L'IA réfléchit...";
-      setTimeout(aiMove, 500);
-    }
-    function aiMove() {
-      if (gameOver) return;
-      const empty = boardState.map((v,i)=>v===""?i:null).filter(v=>v!==null);
-      const choice = empty[Math.floor(Math.random() * empty.length)];
-      boardState[choice] = "O";
-      drawBoard();
-      const result = checkWinner(boardState);
-      if (result) return endGame(result);
-      statusEl.textContent = "À toi de jouer (X) !";
-    }
-    function endGame(result) {
-      gameOver = true;
-      if (result === "Égalité") statusEl.textContent = "Match nul !";
-      else statusEl.textContent = (result === "X" ? "Tu as gagné 🎉" : "L'IA a gagné 🤖");
-    }
-    function resetGame() {
-      boardState = Array(9).fill("");
-      gameOver = false;
-      statusEl.textContent = "À toi de jouer (X) !";
-      drawBoard();
-    }
+    if (b.every(cell => cell !== "")) return "Égalité";
+    return null;
+  }
+  function playerMove(i) {
+    if (gameOver || boardState[i] !== "") return;
+    boardState[i] = "X";
     drawBoard();
+    const result = checkWinner(boardState);
+    if (result) return endGame(result);
+    statusEl.textContent = "L'IA réfléchit...";
+    setTimeout(aiMove, 500);
+  }
+  function aiMove() {
+    if (gameOver) return;
+    const empty = boardState.map((v,i)=>v===""?i:null).filter(v=>v!==null);
+    const choice = empty[Math.floor(Math.random() * empty.length)];
+    boardState[choice] = "O";
+    drawBoard();
+    const result = checkWinner(boardState);
+    if (result) return endGame(result);
+    statusEl.textContent = "À toi de jouer (X) !";
+  }
+  function endGame(result) {
+    gameOver = true;
+    if (result === "Égalité") statusEl.textContent = "Match nul !";
+    else {
+      statusEl.textContent = (result === "X" ? "Tu as gagné 🎉" : "L'IA a gagné 🤖");
+      if (result === "X") addCoins(10);
+    }
+  }
+  function resetGame() {
+    boardState = Array(9).fill("");
+    gameOver = false;
+    statusEl.textContent = "À toi de jouer (X) !";
+    drawBoard();
+  }
+  drawBoard();
 
-    // ----- SNAKE -----
-    const snakeCanvasEl = document.getElementById("snakeCanvas");
-    const snakeCtx = snakeCanvasEl.getContext("2d");
-    const snakeScoreEl = document.getElementById("snakeScore");
-    const gridSize = 14;
-    const tileCount = snakeCanvasEl.width / gridSize;
-    let snake, velocity, food, snakeScoreCount, snakeRunning, snakeLoop;
-    function initSnake() {
-      snake = [{x: 7, y: 7}];
-      velocity = {x: 0, y: 0};
+  // ----- SNAKE -----
+  const snakeCanvasEl = document.getElementById("snakeCanvas");
+  const snakeCtx = snakeCanvasEl.getContext("2d");
+  const snakeScoreEl = document.getElementById("snakeScore");
+  const gridSize = 14;
+  const tileCount = snakeCanvasEl.width / gridSize;
+  let snake, velocity, food, snakeScoreCount, snakeRunning, snakeLoop;
+  function initSnake() {
+    snake = [{x: 7, y: 7}];
+    velocity = {x: 0, y: 0};
+    food = randomFood();
+    snakeScoreCount = 0;
+    snakeScoreEl.textContent = "Score : 0";
+  }
+  function randomFood() {
+    return { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
+  }
+  function setDirection(dir) {
+    if (dir === 'up' && velocity.y !== 1) velocity = {x:0, y:-1};
+    if (dir === 'down' && velocity.y !== -1) velocity = {x:0, y:1};
+    if (dir === 'left' && velocity.x !== 1) velocity = {x:-1, y:0};
+    if (dir === 'right' && velocity.x !== -1) velocity = {x:1, y:0};
+  }
+  function startSnake() {
+    if (snakeLoop) clearInterval(snakeLoop);
+    initSnake();
+    snakeRunning = true;
+    snakeLoop = setInterval(snakeStep, 130);
+  }
+  function snakeStep() {
+    if (!snakeRunning) return;
+    const head = {x: snake[0].x + velocity.x, y: snake[0].y + velocity.y};
+    if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.some(s => s.x === head.x && s.y === head.y)) {
+      snakeRunning = false;
+      clearInterval(snakeLoop);
+      snakeCtx.fillStyle = "#ffcc00";
+      snakeCtx.font = "20px Arial";
+      snakeCtx.textAlign = "center";
+      snakeCtx.fillText("Perdu ! Score : " + snakeScoreCount, snakeCanvasEl.width/2, snakeCanvasEl.height/2);
+      return;
+    }
+    snake.unshift(head);
+    if (head.x === food.x && head.y === food.y) {
+      snakeScoreCount++;
+      snakeScoreEl.textContent = "Score : " + snakeScoreCount;
+      addCoins(1);
       food = randomFood();
-      snakeScoreCount = 0;
-      snakeScoreEl.textContent = "Score : 0";
+    } else {
+      snake.pop();
     }
-    function randomFood() {
-      return { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
+    snakeCtx.fillStyle = "#0d0d1a";
+    snakeCtx.fillRect(0, 0, snakeCanvasEl.width, snakeCanvasEl.height);
+    snakeCtx.fillStyle = "#ff3355";
+    snakeCtx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+    snakeCtx.fillStyle = "#ffcc00";
+    snake.forEach(s => snakeCtx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp") setDirection('up');
+    if (e.key === "ArrowDown") setDirection('down');
+    if (e.key === "ArrowLeft") setDirection('left');
+    if (e.key === "ArrowRight") setDirection('right');
+  });
+  initSnake();
+
+  // ----- COURSE DE VOITURE -----
+  const carCanvasEl = document.getElementById("carCanvas");
+  const carCtx = carCanvasEl.getContext("2d");
+  const carScoreEl = document.getElementById("carScore");
+  const roadWidth = carCanvasEl.width;
+  const laneCount = 3;
+  const laneWidth = roadWidth / laneCount;
+  let playerLane, obstacles, carScoreCount, carRunning, carLoop, carSpeed;
+  function initCar() {
+    playerLane = 1;
+    obstacles = [];
+    carScoreCount = 0;
+    carSpeed = 3;
+    carScoreEl.textContent = "Score : 0";
+  }
+  function moveCar(dir) {
+    if (!carRunning) return;
+    if (dir === 'left' && playerLane > 0) playerLane--;
+    if (dir === 'right' && playerLane < laneCount - 1) playerLane++;
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") moveCar('left');
+    if (e.key === "ArrowRight") moveCar('right');
+  });
+  function startCarGame() {
+    if (carLoop) clearInterval(carLoop);
+    initCar();
+    carRunning = true;
+    carLoop = setInterval(carStep, 40);
+  }
+  function carStep() {
+    if (!carRunning) return;
+    if (Math.random() < 0.04) {
+      obstacles.push({ lane: Math.floor(Math.random() * laneCount), y: -40 });
     }
-    function setDirection(dir) {
-      if (dir === 'up' && velocity.y !== 1) velocity = {x:0, y:-1};
-      if (dir === 'down' && velocity.y !== -1) velocity = {x:0, y:1};
-      if (dir === 'left' && velocity.x !== 1) velocity = {x:-1, y:0};
-      if (dir === 'right' && velocity.x !== -1) velocity = {x:1, y:0};
-    }
-    function startSnake() {
-      if (snakeLoop) clearInterval(snakeLoop);
-      initSnake();
-      snakeRunning = true;
-      snakeLoop = setInterval(snakeStep, 130);
-    }
-    function snakeStep() {
-      if (!snakeRunning) return;
-      const head = {x: snake[0].x + velocity.x, y: snake[0].y + velocity.y};
-      if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.some(s => s.x === head.x && s.y === head.y)) {
-        snakeRunning = false;
-        clearInterval(snakeLoop);
-        snakeCtx.fillStyle = "#ffcc00";
-        snakeCtx.font = "20px Arial";
-        snakeCtx.textAlign = "center";
-        snakeCtx.fillText("Perdu ! Score : " + snakeScoreCount, snakeCanvasEl.width/2, snakeCanvasEl.height/2);
+    obstacles.forEach(o => o.y += carSpeed);
+    obstacles = obstacles.filter(o => o.y < carCanvasEl.height + 40);
+    const carY = carCanvasEl.height - 70;
+    const carHitbox = { lane: playerLane, top: carY, bottom: carY + 50 };
+    for (const o of obstacles) {
+      if (o.lane === playerLane && o.y + 40 > carHitbox.top && o.y < carHitbox.bottom) {
+        carRunning = false;
+        clearInterval(carLoop);
+        carCtx.fillStyle = "#ffcc00";
+        carCtx.font = "18px Arial";
+        carCtx.textAlign = "center";
+        carCtx.fillText("Crash ! Score : " + carScoreCount, carCanvasEl.width/2, carCanvasEl.height/2);
         return;
       }
-      snake.unshift(head);
-      if (head.x === food.x && head.y === food.y) {
-        snakeScoreCount++;
-        snakeScoreEl.textContent = "Score : " + snakeScoreCount;
-        food = randomFood();
-      } else {
-        snake.pop();
-      }
-      snakeCtx.fillStyle = "#0d0d1a";
-      snakeCtx.fillRect(0, 0, snakeCanvasEl.width, snakeCanvasEl.height);
-      snakeCtx.fillStyle = "#ff3355";
-      snakeCtx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
-      snakeCtx.fillStyle = "#ffcc00";
-      snake.forEach(s => snakeCtx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
     }
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowUp") setDirection('up');
-      if (e.key === "ArrowDown") setDirection('down');
-      if (e.key === "ArrowLeft") setDirection('left');
-      if (e.key === "ArrowRight") setDirection('right');
+    carScoreCount++;
+    carScoreEl.textContent = "Score : " + carScoreCount;
+    if (carScoreCount % 50 === 0) addCoins(1);
+    carCtx.fillStyle = "#333";
+    carCtx.fillRect(0, 0, carCanvasEl.width, carCanvasEl.height);
+    carCtx.strokeStyle = "#ffcc00";
+    carCtx.setLineDash([10, 10]);
+    for (let i = 1; i < laneCount; i++) {
+      carCtx.beginPath();
+      carCtx.moveTo(i * laneWidth, 0);
+      carCtx.lineTo(i * laneWidth, carCanvasEl.height);
+      carCtx.stroke();
+    }
+    carCtx.setLineDash([]);
+    carCtx.fillStyle = "#ff3355";
+    obstacles.forEach(o => {
+      carCtx.fillRect(o.lane * laneWidth + 10, o.y, laneWidth - 20, 40);
     });
-    initSnake();
+    carCtx.fillStyle = "#ffcc00";
+    carCtx.fillRect(playerLane * laneWidth + 10, carY, laneWidth - 20, 50);
+  }
+  initCar();
 
-    // ----- COURSE DE VOITURE -----
-    const carCanvasEl = document.getElementById("carCanvas");
-    const carCtx = carCanvasEl.getContext("2d");
-    const carScoreEl = document.getElementById("carScore");
-    const roadWidth = carCanvasEl.width;
-    const laneCount = 3;
-    const laneWidth = roadWidth / laneCount;
-    let playerLane, obstacles, carScoreCount, carRunning, carLoop, carSpeed;
-
-    function initCar() {
-      playerLane = 1;
-      obstacles = [];
-      carScoreCount = 0;
-      carSpeed = 3;
-      carScoreEl.textContent = "Score : 0";
-    }
-
-    function moveCar(dir) {
-      if (!carRunning) return;
-      if (dir === 'left' && playerLane > 0) playerLane--;
-      if (dir === 'right' && playerLane < laneCount - 1) playerLane++;
-    }
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") moveCar('left');
-      if (e.key === "ArrowRight") moveCar('right');
-    });
-
-    function startCarGame() {
-      if (carLoop) clearInterval(carLoop);
-      initCar();
-      carRunning = true;
-      carLoop = setInterval(carStep, 40);
-    }
-
-    function carStep() {
-      if (!carRunning) return;
-
-      if (Math.random() < 0.04) {
-        obstacles.push({ lane: Math.floor(Math.random() * laneCount), y: -40 });
-      }
-
-      obstacles.forEach(o => o.y += carSpeed);
-      obstacles = obstacles.filter(o => o.y < carCanvasEl.height + 40);
-
-      const carY = carCanvasEl.height - 70;
-      const carHitbox = { lane: playerLane, top: carY, bottom: carY + 50 };
-
-      for (const o of obstacles) {
-        if (o.lane === playerLane && o.y + 40 > carHitbox.top && o.y < carHitbox.bottom) {
-          carRunning = false;
-          clearInterval(carLoop);
-          carCtx.fillStyle = "#ffcc00";
-          carCtx.font = "18px Arial";
-          carCtx.textAlign = "center";
-          carCtx.fillText("Crash ! Score : " + carScoreCount, carCanvasEl.width/2, carCanvasEl.height/2);
-          return;
-        }
-      }
-
-      carScoreCount++;
-      carScoreEl.textContent = "Score : " + carScoreCount;
-
-      carCtx.fillStyle = "#333";
-      carCtx.fillRect(0, 0, carCanvasEl.width, carCanvasEl.height);
-      carCtx.strokeStyle = "#ffcc00";
-      carCtx.setLineDash([10, 10]);
-      for (let i = 1; i < laneCount; i++) {
-        carCtx.beginPath();
-        carCtx.moveTo(i * laneWidth, 0);
-        carCtx.lineTo(i * laneWidth, carCanvasEl.height);
-        carCtx.stroke();
-      }
-      carCtx.setLineDash([]);
-
-      carCtx.fillStyle = "#ff3355";
-      obstacles.forEach(o => {
-        carCtx.fillRect(o.lane * laneWidth + 10, o.y, laneWidth - 20, 40);
-      });
-
-      carCtx.fillStyle = "#ffcc00";
-      carCtx.fillRect(playerLane * laneWidth + 10, carY, laneWidth - 20, 50);
-    }
-    initCar();
-
-    // ----- CHATBOT -----
-    const chatBoxEl = document.getElementById("chatBox");
-    const chatInputEl = document.getElementById("chatInput");
-    function botReply(msg) {
-      msg = msg.toLowerCase();
-      if (msg.includes("bonjour") || msg.includes("salut")) return "Salut ! Comment ça va ? 🦁";
-      if (msg.includes("nom")) return "Je suis l'assistant de Dark Lion !";
-      if (msg.includes("ça va")) return "Ça va bien, merci ! Et toi ?";
-      if (msg.includes("termux")) return "Termux, c'est génial pour coder depuis un téléphone Android !";
-      if (msg.includes("site")) return "Ce site a été codé entièrement avec Termux, HTML, CSS et JS.";
-      if (msg.includes("merci")) return "Avec plaisir ! 😊";
-      return "Je ne suis qu'un petit assistant simple, mais je fais de mon mieux !";
-    }
-    function sendMessage() {
-      const text = chatInputEl.value.trim();
-      if (!text) return;
-      chatBoxEl.innerHTML += `<p class="msg-user"><strong>Toi:</strong> ${text}</p>`;
-      const reply = botReply(text);
-      setTimeout(() => {
-        chatBoxEl.innerHTML += `<p class="msg-bot"><strong>IA:</strong> ${reply}</p>`;
-        chatBoxEl.scrollTop = chatBoxEl.scrollHeight;
-      }, 400);
-      chatInputEl.value = "";
+  // ----- CHATBOT -----
+  const chatBoxEl = document.getElementById("chatBox");
+  const chatInputEl = document.getElementById("chatInput");
+  function botReply(msg) {
+    msg = msg.toLowerCase();
+    if (msg.includes("bonjour") || msg.includes("salut")) return "Salut ! Comment ça va ? 🦁";
+    if (msg.includes("nom")) return "Je suis l'assistant de Dark Lion !";
+    if (msg.includes("ça va")) return "Ça va bien, merci ! Et toi ?";
+    if (msg.includes("termux")) return "Termux, c'est génial pour coder depuis un téléphone Android !";
+    if (msg.includes("site")) return "Ce site a été codé entièrement avec Termux, HTML, CSS et JS.";
+    if (msg.includes("merci")) return "Avec plaisir ! 😊";
+    return "Je ne suis qu'un petit assistant simple, mais je fais de mon mieux !";
+  }
+  function sendMessage() {
+    const text = chatInputEl.value.trim();
+    if (!text) return;
+    chatBoxEl.innerHTML += `<p class="msg-user"><strong>Toi:</strong> ${text}</p>`;
+    const reply = botReply(text);
+    setTimeout(() => {
+      chatBoxEl.innerHTML += `<p class="msg-bot"><strong>IA:</strong> ${reply}</p>`;
       chatBoxEl.scrollTop = chatBoxEl.scrollHeight;
-    }
-    chatInputEl.addEventListener("keypress", function(e) {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script>
+    }, 400);
+    chatInputEl.value = "";
+    chatBoxEl.scrollTop = chatBoxEl.scrollHeight;
+  }
+  chatInputEl.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+  });
+</script>
 
 </body>
 </html>
