@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-<p><p>Le début de l'aventure ne fait que commencer</p>e en programmation web avec Termux</p>  <title>Dark Lion 🦁</title>
+  <title>Dark Lion 🦁</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
       color: white;
       margin: 0;
@@ -21,32 +22,96 @@
       max-width: 500px;
       margin: 0 auto 30px auto;
     }
-    h1 {
-      color: #ffcc00;
+    .profile-pic {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffcc00;
+      margin-bottom: 15px;
+    }
+    h1 { color: #ffcc00; font-size: 2.5em; margin: 0; text-shadow: 0 0 10px #ffcc00; }
+    h2 { color: #ffcc00; margin-top: 0; }
+    .subtitle { color: #888; font-size: 1.1em; margin-top: 10px; }
+    p { color: #ccc; line-height: 1.6; margin-top: 20px; }
+    a { color: #ffcc00; text-decoration: none; }
+
+    /* Morpion */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 80px);
+      grid-template-rows: repeat(3, 80px);
+      gap: 8px;
+      justify-content: center;
+      margin: 20px auto;
+    }
+    .cell {
+      background: #1a1a2e;
+      border: 2px solid #ffcc00;
+      border-radius: 8px;
       font-size: 2.5em;
-      margin: 0;
-      text-shadow: 0 0 10px #ffcc00;
-    }
-    h2 {
       color: #ffcc00;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
     }
-    .subtitle {
-      color: #888;
-      font-size: 1.1em;
-      margin-top: 10px;
+    .cell:hover { background: #2a2a4e; }
+    #gameStatus { color: #ffcc00; font-weight: bold; margin-top: 10px; }
+    button.reset {
+      background: #ffcc00;
+      color: #111;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: 15px;
+      cursor: pointer;
     }
-    p {
-      color: #ccc;
-      line-height: 1.6;
-      margin-top: 20px;
+
+    /* Chatbot */
+    #chatBox {
+      background: #0d0d1a;
+      border: 1px solid #444;
+      border-radius: 8px;
+      height: 200px;
+      overflow-y: auto;
+      padding: 10px;
+      text-align: left;
+      margin-bottom: 10px;
+      font-size: 0.95em;
     }
+    #chatBox p { margin: 6px 0; }
+    .msg-user { color: #fff; }
+    .msg-bot { color: #ffcc00; }
+    #chatInput {
+      width: 70%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ffcc00;
+      background: #1a1a2e;
+      color: white;
+    }
+    #chatSend {
+      background: #ffcc00;
+      color: #111;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer { text-align: center; color: #666; margin-top: 40px; font-size: 0.9em; }
   </style>
 </head>
 <body>
+
   <div class="container">
+    <img src="profile.jpg" alt="Photo de profil" class="profile-pic">
     <h1>🦁 Dark Lion</h1>
     <p class="subtitle">Mon univers digital commence ici</p>
-    <p>Une aventure en programmation web avec Termux</p>
+    <p>Le début de l'aventure ne fait que commencer</p>
   </div>
 
   <div class="container">
@@ -55,16 +120,125 @@
   </div>
 
   <div class="container">
-    <h2>Mes projets</h2>
-    <p>🦁 Dark Lion — mon tout premier site web</p>
-    <p>Plus de projets arrivent bientôt...</p>
+    <h2>🎮 Morpion contre l'IA</h2>
+    <div class="board" id="board"></div>
+    <p id="gameStatus">À toi de jouer (X) !</p>
+    <button class="reset" onclick="resetGame()">Recommencer</button>
   </div>
 
   <div class="container">
-    <>l>Contact</h2>
-    <p>Envie de me contacter ? Écris-moi à : tonemail@example.com</p>
+    <h2>🤖 Assistant IA</h2>
+    <div id="chatBox"></div>
+    <input type="text" id="chatInput" placeholder="Écris un message...">
+    <button id="chatSend" onclick="sendMessage()">Envoyer</button>
   </div>
+
+  <div class="container">
+    <h2>Contact</h2>
+    <p>Envie de me contacter ? Appelle-moi au : <a href="tel:+22892200997">+228 92 20 09 97</a></p>
+  </div>
+
+  <footer>
+    <p>© 2026 Dark Lion — Codé avec Termux</p>
+  </footer>
+
+  <script>
+    // ----- MORPION -----
+    let boardState = Array(9).fill("");
+    let gameOver = false;
+    const boardEl = document.getElementById("board");
+    const statusEl = document.getElementById("gameStatus");
+
+    function drawBoard() {
+      boardEl.innerHTML = "";
+      boardState.forEach((val, i) => {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.textContent = val;
+        cell.onclick = () => playerMove(i);
+        boardEl.appendChild(cell);
+      });
+    }
+
+    function checkWinner(b) {
+      const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      for (const [a,b2,c] of lines) {
+        if (b[a] && b[a] === b[b2] && b[a] === b[c]) return b[a];
+      }
+      if (b.every(cell => cell !== "")) return "Égalité";
+      return null;
+    }
+
+    function playerMove(i) {
+      if (gameOver || boardState[i] !== "") return;
+      boardState[i] = "X";
+      drawBoard();
+      const result = checkWinner(boardState);
+      if (result) return endGame(result);
+      statusEl.textContent = "L'IA réfléchit...";
+      setTimeout(aiMove, 500);
+    }
+
+    function aiMove() {
+      if (gameOver) return;
+      const empty = boardState.map((v,i)=>v===""?i:null).filter(v=>v!==null);
+      const choice = empty[Math.floor(Math.random() * empty.length)];
+      boardState[choice] = "O";
+      drawBoard();
+      const result = checkWinner(boardState);
+      if (result) return endGame(result);
+      statusEl.textContent = "À toi de jouer (X) !";
+    }
+
+    function endGame(result) {
+      gameOver = true;
+      if (result === "Égalité") statusEl.textContent = "Match nul !";
+      else statusEl.textContent = (result === "X" ? "Tu as gagné 🎉" : "L'IA a gagné 🤖");
+    }
+
+    function resetGame() {
+      boardState = Array(9).fill("");
+      gameOver = false;
+      statusEl.textContent = "À toi de jouer (X) !";
+      drawBoard();
+    }
+
+    drawBoard();
+
+    // ----- CHATBOT -----
+    const chatBox = document.getElementById("chatBox");
+    const chatInput = document.getElementById("chatInput");
+
+    function botReply(msg) {
+      msg = msg.toLowerCase();
+      if (msg.includes("bonjour") || msg.includes("salut")) return "Salut ! Comment ça va ? 🦁";
+      if (msg.includes("nom")) return "Je suis l'assistant de Dark Lion !";
+      if (msg.includes("ça va")) return "Ça va bien, merci ! Et toi ?";
+      if (msg.includes("termux")) return "Termux, c'est génial pour coder depuis un téléphone Android !";
+      if (msg.includes("site")) return "Ce site a été codé entièrement avec Termux, HTML, CSS et JS.";
+      if (msg.includes("merci")) return "Avec plaisir ! 😊";
+      return "Je ne suis qu'un petit assistant simple, mais je fais de mon mieux !";
+    }
+
+    function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      chatBox.innerHTML += `<p class="msg-user"><strong>Toi:</strong> ${text}</p>`;
+      const reply = botReply(text);
+      setTimeout(() => {
+        chatBox.innerHTML += `<p class="msg-bot"><strong>IA:</strong> ${reply}</p>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 400);
+      chatInput.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    chatInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+
 </body>
 </html>
-<p>Envie de me contacter ? Appelle-moi au : +228 92 20 09 97</p>
+
 
