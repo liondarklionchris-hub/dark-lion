@@ -12,7 +12,6 @@
     color: white;
     padding-bottom: 30px;
   }
-  /* Écran de connexion */
   #loginScreen {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
@@ -48,15 +47,12 @@
     padding: 12px 16px; border-bottom: 2px solid #ffcc00; position: sticky; top: 0; z-index: 10;
   }
   header .left, header .right { display: flex; align-items: center; gap: 12px; }
-  header .icon { font-size: 1.3em; cursor: pointer; }
+  header .icon { font-size: 1.3em; }
   header .title { font-weight: bold; color: #ffcc00; font-size: 1.1em; }
   #coinCount { background: #1a1a2e; border: 1px solid #ffcc00; border-radius: 20px; padding: 3px 10px; font-size: 0.9em; }
 
-  .tabs {
-    display: flex; background: #16162a; border-bottom: 2px solid #333;
-    position: sticky; top: 52px; z-index: 9;
-  }
-  .tab { flex: 1; text-align: center; padding: 12px 0; color: #888; cursor: pointer; font-size: 0.9em; }
+  .tabs { display: flex; background: #16162a; border-bottom: 2px solid #333; position: sticky; top: 52px; z-index: 9; }
+  .tab { flex: 1; text-align: center; padding: 12px 0; color: #888; font-size: 0.9em; }
   .tab.active { color: #ffcc00; border-bottom: 3px solid #ffcc00; font-weight: bold; }
 
   .page { display: none; padding: 20px 16px; }
@@ -67,10 +63,7 @@
     border: 2px solid #ffcc00; text-align: center; box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
     max-width: 500px; margin: 0 auto 20px auto;
   }
-  .profile-pic {
-    width: 130px; height: 130px; border-radius: 50%;
-    object-fit: cover; border: 3px solid #ffcc00; margin-bottom: 12px;
-  }
+  .profile-pic { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid #ffcc00; margin-bottom: 12px; }
   h1 { color: #ffcc00; font-size: 2em; text-shadow: 0 0 10px #ffcc00; }
   h2 { color: #ffcc00; margin-bottom: 10px; }
   .subtitle { color: #888; margin-top: 8px; }
@@ -78,73 +71,38 @@
   a { color: #ffcc00; text-decoration: none; }
 
   .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 500px; margin: 0 auto; }
-  .game-card { background: #16162a; border: 2px solid #ffcc00; border-radius: 12px; padding: 20px 10px; text-align: center; cursor: pointer; }
+  .game-card { background: #16162a; border: 2px solid #ffcc00; border-radius: 12px; padding: 20px 10px; text-align: center; }
   .game-card .emoji { font-size: 2em; }
   .game-card .label { color: #ffcc00; margin-top: 6px; font-size: 0.9em; }
 
-  .board {
-    display: grid; grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px);
-    gap: 8px; justify-content: center; margin: 20px auto;
-  }
-  .cell {
-    background: #1a1a2e; border: 2px solid #ffcc00; border-radius: 8px;
-    font-size: 2.5em; color: #ffcc00; display: flex; align-items: center;
-    justify-content: center; cursor: pointer;
-  }
+  .board { display: grid; grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px); gap: 8px; justify-content: center; margin: 20px auto; }
+  .cell { background: #1a1a2e; border: 2px solid #ffcc00; border-radius: 8px; font-size: 2.5em; color: #ffcc00; display: flex; align-items: center; justify-content: center; }
   #gameStatus { color: #ffcc00; font-weight: bold; margin-top: 10px; }
-  button.reset {
-    background: #ffcc00; color: #111; border: none; padding: 10px 20px;
-    border-radius: 8px; font-weight: bold; margin-top: 15px; cursor: pointer;
-  }
+  button.reset, button.back { background: #ffcc00; color: #111; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; margin-top: 15px; margin-right: 8px; }
+  button.back { background: #444; color: #fff; }
 
-  #snakeCanvas {
-    background: #0d0d1a; border: 2px solid #ffcc00; border-radius: 8px;
-    margin: 15px auto; display: block; touch-action: none;
-  }
-  .snake-controls {
-    display: grid; grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(2, 50px);
-    gap: 6px; justify-content: center; margin-top: 10px;
-  }
-  .snake-btn {
-    background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00;
-    border-radius: 8px; font-size: 1.3em; cursor: pointer;
-  }
+  #snakeCanvas { background: #0d0d1a; border: 2px solid #ffcc00; border-radius: 8px; margin: 15px auto; display: block; touch-action: none; }
+  .snake-controls { display: grid; grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(2, 50px); gap: 6px; justify-content: center; margin-top: 10px; }
+  .snake-btn { background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00; border-radius: 8px; font-size: 1.3em; }
 
-  #carCanvas {
-    background: #333; border: 2px solid #ffcc00; border-radius: 8px;
-    margin: 15px auto; display: block; touch-action: none;
-  }
+  #carCanvas { background: #333; border: 2px solid #ffcc00; border-radius: 8px; margin: 15px auto; display: block; touch-action: none; }
   .car-controls { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
-  .car-btn {
-    background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00;
-    border-radius: 8px; font-size: 1.5em; width: 60px; height: 50px; cursor: pointer;
-  }
+  .car-btn { background: #1a1a2e; color: #ffcc00; border: 2px solid #ffcc00; border-radius: 8px; font-size: 1.5em; width: 60px; height: 50px; }
 
-  #chatBox {
-    background: #0d0d1a; border: 1px solid #444; border-radius: 8px;
-    height: 250px; overflow-y: auto; padding: 10px; text-align: left;
-    margin-bottom: 10px; font-size: 0.95em;
-  }
+  #chatBox { background: #0d0d1a; border: 1px solid #444; border-radius: 8px; height: 250px; overflow-y: auto; padding: 10px; text-align: left; margin-bottom: 10px; font-size: 0.95em; }
   #chatBox p { margin: 6px 0; }
   .msg-user { color: #fff; }
   .msg-bot { color: #ffcc00; }
   .chat-input-row { display: flex; gap: 8px; max-width: 500px; margin: 0 auto; }
-  #chatInput {
-    flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #ffcc00;
-    background: #1a1a2e; color: white;
-  }
-  #chatSend {
-    background: #ffcc00; color: #111; border: none; padding: 10px 16px;
-    border-radius: 6px; font-weight: bold; cursor: pointer;
-  }
+  #chatInput { flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #ffcc00; background: #1a1a2e; color: white; }
+  #chatSend { background: #ffcc00; color: #111; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; }
 
   footer { text-align: center; color: #666; margin-top: 30px; font-size: 0.85em; }
-  .hidden { display: none; }
+  .hidden { display: none !important; }
 </style>
 </head>
 <body>
 
-<!-- ÉCRAN DE CONNEXION -->
 <div id="loginScreen">
   <div id="loginBox">
     <h1>🦁 Dark Lion AI</h1>
@@ -170,10 +128,10 @@
 </header>
 
 <div class="tabs">
-  <div class="tab active" data-page="accueil">Accueil</div>
-  <div class="tab" data-page="jeux">🎮 Jeux</div>
-  <div class="tab" data-page="chat">💬 Chat</div>
-  <div class="tab" data-page="contact">Contact</div>
+  <div class="tab active" onclick="showPage('accueil', this)">Accueil</div>
+  <div class="tab" onclick="showPage('jeux', this)">🎮 Jeux</div>
+  <div class="tab" onclick="showPage('chat', this)">💬 Chat</div>
+  <div class="tab" onclick="showPage('contact', this)">Contact</div>
 </div>
 
 <div class="page active" id="page-accueil">
@@ -191,9 +149,9 @@
 
 <div class="page" id="page-jeux">
   <div class="game-grid" id="gameMenu">
-    <div class="game-card" data-game="morpion"><div class="emoji">❌</div><div class="label">Morpion</div></div>
-    <div class="game-card" data-game="snake"><div class="emoji">🐍</div><div class="label">Snake</div></div>
-    <div class="game-card" data-game="voiture"><div class="emoji">🏎️</div><div class="label">Voiture</div></div>
+    <div class="game-card" onclick="openGame('morpion')"><div class="emoji">❌</div><div class="label">Morpion</div></div>
+    <div class="game-card" onclick="openGame('snake')"><div class="emoji">🐍</div><div class="label">Snake</div></div>
+    <div class="game-card" onclick="openGame('voiture')"><div class="emoji">🏎️</div><div class="label">Voiture</div></div>
   </div>
 
   <div class="container hidden" id="game-morpion">
@@ -201,6 +159,7 @@
     <div class="board" id="board"></div>
     <p id="gameStatus">À toi de jouer (X) !</p>
     <button class="reset" onclick="resetGame()">Recommencer</button>
+    <button class="back" onclick="closeGame()">← Retour</button>
   </div>
 
   <div class="container hidden" id="game-snake">
@@ -208,6 +167,7 @@
     <p id="snakeScore" style="color:#ffcc00;font-weight:bold;">Score : 0</p>
     <canvas id="snakeCanvas" width="280" height="280"></canvas>
     <button class="reset" onclick="startSnake()">Démarrer</button>
+    <button class="back" onclick="closeGame()">← Retour</button>
     <div class="snake-controls">
       <span></span>
       <button class="snake-btn" onclick="setDirection('up')">↑</button>
@@ -223,6 +183,7 @@
     <p id="carScore" style="color:#ffcc00;font-weight:bold;">Score : 0</p>
     <canvas id="carCanvas" width="240" height="320"></canvas>
     <button class="reset" onclick="startCarGame()">Démarrer</button>
+    <button class="back" onclick="closeGame()">← Retour</button>
     <div class="car-controls">
       <button class="car-btn" onclick="moveCar('left')">←</button>
       <button class="car-btn" onclick="moveCar('right')">→</button>
@@ -252,131 +213,137 @@
 </div>
 
 <script>
-  // ----- CONNEXION -----
   function handleLogin() {
-    const contact = document.getElementById("loginContact").value.trim();
-    const name = document.getElementById("loginName").value.trim();
-    const errorEl = document.getElementById("loginError");
-
+    var contact = document.getElementById("loginContact").value.trim();
+    var name = document.getElementById("loginName").value.trim();
+    var errorEl = document.getElementById("loginError");
     if (!contact || !name) {
       errorEl.textContent = "Remplis les deux champs pour continuer.";
       return;
     }
-    const isEmail = contact.includes("@");
-    const isPhone = /^[0-9+ ]{6,}$/.test(contact);
+    var isEmail = contact.indexOf("@") !== -1;
+    var isPhone = /^[0-9+ ]{6,}$/.test(contact);
     if (!isEmail && !isPhone) {
       errorEl.textContent = "Entre un email valide ou un numéro de téléphone.";
       return;
     }
-
-    localStorage.setItem("darklion_user", JSON.stringify({ contact, name }));
-    document.getElementById("loginScreen").style.display = "none";
+    localStorage.setItem("darklion_user", JSON.stringify({ contact: contact, name: name }));
+    document.getElementById("loginScreen").classList.add("hidden");
     document.getElementById("mainApp").style.display = "block";
     document.getElementById("welcomeMsg").textContent = "Bienvenue " + name + " 🦁";
   }
 
-  window.addEventListener("load", () => {
-    const saved = localStorage.getItem("darklion_user");
+  window.onload = function() {
+    var saved = localStorage.getItem("darklion_user");
     if (saved) {
-      const user = JSON.parse(saved);
-      document.getElementById("loginScreen").style.display = "none";
+      var user = JSON.parse(saved);
+      document.getElementById("loginScreen").classList.add("hidden");
       document.getElementById("mainApp").style.display = "block";
       document.getElementById("welcomeMsg").textContent = "Bienvenue " + user.name + " 🦁";
     }
-  });
+    drawBoard();
+    initSnake();
+    initCar();
+  };
 
-  // ----- NAVIGATION ONGLETS -----
-  document.querySelectorAll(".tab").forEach(tab => {
-    tab.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-      tab.classList.add("active");
-      document.getElementById("page-" + tab.dataset.page).classList.add("active");
-    });
-  });
+  function showPage(name, el) {
+    var tabs = document.querySelectorAll(".tab");
+    for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+    var pages = document.querySelectorAll(".page");
+    for (var j = 0; j < pages.length; j++) pages[j].classList.remove("active");
+    el.classList.add("active");
+    document.getElementById("page-" + name).classList.add("active");
+  }
 
-  // ----- MENU JEUX -----
-  document.querySelectorAll(".game-card").forEach(card => {
-    card.addEventListener("click", () => {
-      document.getElementById("gameMenu").classList.add("hidden");
-      document.querySelectorAll("#page-jeux .container").forEach(c => c.classList.add("hidden"));
-      document.getElementById("game-" + card.dataset.game).classList.remove("hidden");
-    });
-  });
+  function openGame(name) {
+    document.getElementById("gameMenu").classList.add("hidden");
+    var containers = document.querySelectorAll("#page-jeux .container");
+    for (var i = 0; i < containers.length; i++) containers[i].classList.add("hidden");
+    document.getElementById("game-" + name).classList.remove("hidden");
+  }
 
-  // ----- PIECES -----
-  let coins = 0;
-  const coinCountEl = document.getElementById("coinCount");
+  function closeGame() {
+    document.getElementById("gameMenu").classList.remove("hidden");
+    var containers = document.querySelectorAll("#page-jeux .container");
+    for (var i = 0; i < containers.length; i++) containers[i].classList.add("hidden");
+  }
+
+  var coins = 0;
+  var coinCountEl = document.getElementById("coinCount");
   function addCoins(n) {
     coins += n;
     coinCountEl.textContent = "🪙 " + coins;
   }
 
-  // ----- MORPION -----
-  let boardState = Array(9).fill("");
-  let gameOver = false;
-  const boardEl = document.getElementById("board");
-  const statusEl = document.getElementById("gameStatus");
+  var boardState = ["","","","","","","","",""];
+  var gameOver = false;
+  var boardEl = document.getElementById("board");
+  var statusEl = document.getElementById("gameStatus");
   function drawBoard() {
     boardEl.innerHTML = "";
-    boardState.forEach((val, i) => {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      cell.textContent = val;
-      cell.onclick = () => playerMove(i);
-      boardEl.appendChild(cell);
-    });
+    for (var i = 0; i < 9; i++) {
+      (function(idx) {
+        var cell = document.createElement("div");
+        cell.className = "cell";
+        cell.textContent = boardState[idx];
+        cell.onclick = function() { playerMove(idx); };
+        boardEl.appendChild(cell);
+      })(i);
+    }
   }
   function checkWinner(b) {
-    const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-    for (const [a,b2,c] of lines) {
-      if (b[a] && b[a] === b[b2] && b[a] === b[c]) return b[a];
+    var lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    for (var i = 0; i < lines.length; i++) {
+      var a = lines[i][0], bb = lines[i][1], c = lines[i][2];
+      if (b[a] && b[a] === b[bb] && b[a] === b[c]) return b[a];
     }
-    if (b.every(cell => cell !== "")) return "Égalité";
+    var full = true;
+    for (var j = 0; j < 9; j++) if (b[j] === "") full = false;
+    if (full) return "Égalité";
     return null;
   }
   function playerMove(i) {
     if (gameOver || boardState[i] !== "") return;
     boardState[i] = "X";
     drawBoard();
-    const result = checkWinner(boardState);
-    if (result) return endGame(result);
+    var result = checkWinner(boardState);
+    if (result) { endGame(result); return; }
     statusEl.textContent = "L'IA réfléchit...";
     setTimeout(aiMove, 500);
   }
   function aiMove() {
     if (gameOver) return;
-    const empty = boardState.map((v,i)=>v===""?i:null).filter(v=>v!==null);
-    const choice = empty[Math.floor(Math.random() * empty.length)];
+    var empty = [];
+    for (var i = 0; i < 9; i++) if (boardState[i] === "") empty.push(i);
+    var choice = empty[Math.floor(Math.random() * empty.length)];
     boardState[choice] = "O";
     drawBoard();
-    const result = checkWinner(boardState);
-    if (result) return endGame(result);
+    var result = checkWinner(boardState);
+    if (result) { endGame(result); return; }
     statusEl.textContent = "À toi de jouer (X) !";
   }
   function endGame(result) {
     gameOver = true;
-    if (result === "Égalité") statusEl.textContent = "Match nul !";
-    else {
+    if (result === "Égalité") {
+      statusEl.textContent = "Match nul !";
+    } else {
       statusEl.textContent = (result === "X" ? "Tu as gagné 🎉" : "L'IA a gagné 🤖");
       if (result === "X") addCoins(10);
     }
   }
   function resetGame() {
-    boardState = Array(9).fill("");
+    boardState = ["","","","","","","","",""];
     gameOver = false;
     statusEl.textContent = "À toi de jouer (X) !";
     drawBoard();
   }
-  drawBoard();
 
-  // ----- SNAKE -----
-  const snakeCanvasEl = document.getElementById("snakeCanvas");
-  const snakeCtx = snakeCanvasEl.getContext("2d");
-  const snakeScoreEl = document.getElementById("snakeScore");
-  const gridSize = 14;
-  const tileCount = snakeCanvasEl.width / gridSize;
-  let snake, velocity, food, snakeScoreCount, snakeRunning, snakeLoop;
+  var snakeCanvasEl = document.getElementById("snakeCanvas");
+  var snakeCtx = snakeCanvasEl.getContext("2d");
+  var snakeScoreEl = document.getElementById("snakeScore");
+  var gridSize = 14;
+  var tileCount = snakeCanvasEl.width / gridSize;
+  var snake, velocity, food, snakeScoreCount, snakeRunning, snakeLoop;
   function initSnake() {
     snake = [{x: 7, y: 7}];
     velocity = {x: 0, y: 0};
@@ -401,8 +368,14 @@
   }
   function snakeStep() {
     if (!snakeRunning) return;
-    const head = {x: snake[0].x + velocity.x, y: snake[0].y + velocity.y};
-    if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.some(s => s.x === head.x && s.y === head.y)) {
+    var head = {x: snake[0].x + velocity.x, y: snake[0].y + velocity.y};
+    var crashed = head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount;
+    if (!crashed) {
+      for (var i = 0; i < snake.length; i++) {
+        if (snake[i].x === head.x && snake[i].y === head.y) crashed = true;
+      }
+    }
+    if (crashed) {
       snakeRunning = false;
       clearInterval(snakeLoop);
       snakeCtx.fillStyle = "#ffcc00";
@@ -425,24 +398,23 @@
     snakeCtx.fillStyle = "#ff3355";
     snakeCtx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
     snakeCtx.fillStyle = "#ffcc00";
-    snake.forEach(s => snakeCtx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
+    for (var s = 0; s < snake.length; s++) {
+      snakeCtx.fillRect(snake[s].x * gridSize, snake[s].y * gridSize, gridSize - 2, gridSize - 2);
+    }
   }
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", function(e) {
     if (e.key === "ArrowUp") setDirection('up');
     if (e.key === "ArrowDown") setDirection('down');
     if (e.key === "ArrowLeft") setDirection('left');
     if (e.key === "ArrowRight") setDirection('right');
   });
-  initSnake();
 
-  // ----- COURSE DE VOITURE -----
-  const carCanvasEl = document.getElementById("carCanvas");
-  const carCtx = carCanvasEl.getContext("2d");
-  const carScoreEl = document.getElementById("carScore");
-  const roadWidth = carCanvasEl.width;
-  const laneCount = 3;
-  const laneWidth = roadWidth / laneCount;
-  let playerLane, obstacles, carScoreCount, carRunning, carLoop, carSpeed;
+  var carCanvasEl = document.getElementById("carCanvas");
+  var carCtx = carCanvasEl.getContext("2d");
+  var carScoreEl = document.getElementById("carScore");
+  var laneCount = 3;
+  var laneWidth = carCanvasEl.width / laneCount;
+  var playerLane, obstacles, carScoreCount, carRunning, carLoop, carSpeed;
   function initCar() {
     playerLane = 1;
     obstacles = [];
@@ -455,7 +427,7 @@
     if (dir === 'left' && playerLane > 0) playerLane--;
     if (dir === 'right' && playerLane < laneCount - 1) playerLane++;
   }
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", function(e) {
     if (e.key === "ArrowLeft") moveCar('left');
     if (e.key === "ArrowRight") moveCar('right');
   });
@@ -470,12 +442,16 @@
     if (Math.random() < 0.04) {
       obstacles.push({ lane: Math.floor(Math.random() * laneCount), y: -40 });
     }
-    obstacles.forEach(o => o.y += carSpeed);
-    obstacles = obstacles.filter(o => o.y < carCanvasEl.height + 40);
-    const carY = carCanvasEl.height - 70;
-    const carHitbox = { lane: playerLane, top: carY, bottom: carY + 50 };
-    for (const o of obstacles) {
-      if (o.lane === playerLane && o.y + 40 > carHitbox.top && o.y < carHitbox.bottom) {
+    var newObstacles = [];
+    for (var i = 0; i < obstacles.length; i++) {
+      obstacles[i].y += carSpeed;
+      if (obstacles[i].y < carCanvasEl.height + 40) newObstacles.push(obstacles[i]);
+    }
+    obstacles = newObstacles;
+    var carY = carCanvasEl.height - 70;
+    for (var o = 0; o < obstacles.length; o++) {
+      var ob = obstacles[o];
+      if (ob.lane === playerLane && ob.y + 40 > carY && ob.y < carY + 50) {
         carRunning = false;
         clearInterval(carLoop);
         carCtx.fillStyle = "#ffcc00";
@@ -492,42 +468,40 @@
     carCtx.fillRect(0, 0, carCanvasEl.width, carCanvasEl.height);
     carCtx.strokeStyle = "#ffcc00";
     carCtx.setLineDash([10, 10]);
-    for (let i = 1; i < laneCount; i++) {
+    for (var i2 = 1; i2 < laneCount; i2++) {
       carCtx.beginPath();
-      carCtx.moveTo(i * laneWidth, 0);
-      carCtx.lineTo(i * laneWidth, carCanvasEl.height);
+      carCtx.moveTo(i2 * laneWidth, 0);
+      carCtx.lineTo(i2 * laneWidth, carCanvasEl.height);
       carCtx.stroke();
     }
     carCtx.setLineDash([]);
     carCtx.fillStyle = "#ff3355";
-    obstacles.forEach(o => {
-      carCtx.fillRect(o.lane * laneWidth + 10, o.y, laneWidth - 20, 40);
-    });
+    for (var o2 = 0; o2 < obstacles.length; o2++) {
+      carCtx.fillRect(obstacles[o2].lane * laneWidth + 10, obstacles[o2].y, laneWidth - 20, 40);
+    }
     carCtx.fillStyle = "#ffcc00";
     carCtx.fillRect(playerLane * laneWidth + 10, carY, laneWidth - 20, 50);
   }
-  initCar();
 
-  // ----- CHATBOT -----
-  const chatBoxEl = document.getElementById("chatBox");
-  const chatInputEl = document.getElementById("chatInput");
+  var chatBoxEl = document.getElementById("chatBox");
+  var chatInputEl = document.getElementById("chatInput");
   function botReply(msg) {
     msg = msg.toLowerCase();
-    if (msg.includes("bonjour") || msg.includes("salut")) return "Salut ! Comment ça va ? 🦁";
-    if (msg.includes("nom")) return "Je suis l'assistant de Dark Lion !";
-    if (msg.includes("ça va")) return "Ça va bien, merci ! Et toi ?";
-    if (msg.includes("termux")) return "Termux, c'est génial pour coder depuis un téléphone Android !";
-    if (msg.includes("site")) return "Ce site a été codé entièrement avec Termux, HTML, CSS et JS.";
-    if (msg.includes("merci")) return "Avec plaisir ! 😊";
+    if (msg.indexOf("bonjour") !== -1 || msg.indexOf("salut") !== -1) return "Salut ! Comment ça va ? 🦁";
+    if (msg.indexOf("nom") !== -1) return "Je suis l'assistant de Dark Lion !";
+    if (msg.indexOf("ça va") !== -1) return "Ça va bien, merci ! Et toi ?";
+    if (msg.indexOf("termux") !== -1) return "Termux, c'est génial pour coder depuis un téléphone Android !";
+    if (msg.indexOf("site") !== -1) return "Ce site a été codé entièrement avec Termux, HTML, CSS et JS.";
+    if (msg.indexOf("merci") !== -1) return "Avec plaisir ! 😊";
     return "Je ne suis qu'un petit assistant simple, mais je fais de mon mieux !";
   }
   function sendMessage() {
-    const text = chatInputEl.value.trim();
+    var text = chatInputEl.value.trim();
     if (!text) return;
-    chatBoxEl.innerHTML += `<p class="msg-user"><strong>Toi:</strong> ${text}</p>`;
-    const reply = botReply(text);
-    setTimeout(() => {
-      chatBoxEl.innerHTML += `<p class="msg-bot"><strong>IA:</strong> ${reply}</p>`;
+    chatBoxEl.innerHTML += '<p class="msg-user"><strong>Toi:</strong> ' + text + '</p>';
+    var reply = botReply(text);
+    setTimeout(function() {
+      chatBoxEl.innerHTML += '<p class="msg-bot"><strong>IA:</strong> ' + reply + '</p>';
       chatBoxEl.scrollTop = chatBoxEl.scrollHeight;
     }, 400);
     chatInputEl.value = "";
