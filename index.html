@@ -32,7 +32,6 @@
     p { color: #ccc; line-height: 1.6; margin-top: 20px; }
     a { color: #ffcc00; text-decoration: none; }
 
-    /* Morpion */
     .board {
       display: grid; grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px);
       gap: 8px; justify-content: center; margin: 20px auto;
@@ -49,7 +48,6 @@
       border-radius: 8px; font-weight: bold; margin-top: 15px; cursor: pointer;
     }
 
-    /* Snake */
     #snakeCanvas {
       background: #0d0d1a; border: 2px solid #ffcc00; border-radius: 8px;
       margin: 15px auto; display: block; touch-action: none;
@@ -64,7 +62,6 @@
       border-radius: 8px; font-size: 1.3em; cursor: pointer;
     }
 
-    /* Course de voiture */
     #carCanvas {
       background: #333; border: 2px solid #ffcc00; border-radius: 8px;
       margin: 15px auto; display: block; touch-action: none;
@@ -78,7 +75,6 @@
       border-radius: 8px; font-size: 1.5em; width: 60px; height: 50px; cursor: pointer;
     }
 
-    /* Chatbot */
     #chatBox {
       background: #0d0d1a; border: 1px solid #444; border-radius: 8px;
       height: 200px; overflow-y: auto; padding: 10px; text-align: left;
@@ -219,17 +215,18 @@
     drawBoard();
 
     // ----- SNAKE -----
-    const canvas = document.getElementById("snakeCanvas");
-    const ctx = canvas.getContext("2d");
+    const snakeCanvasEl = document.getElementById("snakeCanvas");
+    const snakeCtx = snakeCanvasEl.getContext("2d");
+    const snakeScoreEl = document.getElementById("snakeScore");
     const gridSize = 14;
-    const tileCount = canvas.width / gridSize;
-    let snake, velocity, food, snakeScore, snakeRunning, snakeLoop;
+    const tileCount = snakeCanvasEl.width / gridSize;
+    let snake, velocity, food, snakeScoreCount, snakeRunning, snakeLoop;
     function initSnake() {
       snake = [{x: 7, y: 7}];
       velocity = {x: 0, y: 0};
       food = randomFood();
-      snakeScore = 0;
-      document.getElementById("snakeScore").textContent = "Score : 0";
+      snakeScoreCount = 0;
+      snakeScoreEl.textContent = "Score : 0";
     }
     function randomFood() {
       return { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
@@ -252,26 +249,26 @@
       if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.some(s => s.x === head.x && s.y === head.y)) {
         snakeRunning = false;
         clearInterval(snakeLoop);
-        ctx.fillStyle = "#ffcc00";
-        ctx.font = "20px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText("Perdu ! Score : " + snakeScore, canvas.width/2, canvas.height/2);
+        snakeCtx.fillStyle = "#ffcc00";
+        snakeCtx.font = "20px Arial";
+        snakeCtx.textAlign = "center";
+        snakeCtx.fillText("Perdu ! Score : " + snakeScoreCount, snakeCanvasEl.width/2, snakeCanvasEl.height/2);
         return;
       }
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
-        snakeScore++;
-        document.getElementById("snakeScore").textContent = "Score : " + snakeScore;
+        snakeScoreCount++;
+        snakeScoreEl.textContent = "Score : " + snakeScoreCount;
         food = randomFood();
       } else {
         snake.pop();
       }
-      ctx.fillStyle = "#0d0d1a";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#ff3355";
-      ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
-      ctx.fillStyle = "#ffcc00";
-      snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
+      snakeCtx.fillStyle = "#0d0d1a";
+      snakeCtx.fillRect(0, 0, snakeCanvasEl.width, snakeCanvasEl.height);
+      snakeCtx.fillStyle = "#ff3355";
+      snakeCtx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+      snakeCtx.fillStyle = "#ffcc00";
+      snake.forEach(s => snakeCtx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
     }
     document.addEventListener("keydown", (e) => {
       if (e.key === "ArrowUp") setDirection('up');
@@ -282,19 +279,20 @@
     initSnake();
 
     // ----- COURSE DE VOITURE -----
-    const carCanvas = document.getElementById("carCanvas");
-    const carCtx = carCanvas.getContext("2d");
-    const roadWidth = carCanvas.width;
+    const carCanvasEl = document.getElementById("carCanvas");
+    const carCtx = carCanvasEl.getContext("2d");
+    const carScoreEl = document.getElementById("carScore");
+    const roadWidth = carCanvasEl.width;
     const laneCount = 3;
     const laneWidth = roadWidth / laneCount;
-    let playerLane, obstacles, carScore, carRunning, carLoop, carSpeed;
+    let playerLane, obstacles, carScoreCount, carRunning, carLoop, carSpeed;
 
     function initCar() {
       playerLane = 1;
       obstacles = [];
-      carScore = 0;
+      carScoreCount = 0;
       carSpeed = 3;
-      document.getElementById("carScore").textContent = "Score : 0";
+      carScoreEl.textContent = "Score : 0";
     }
 
     function moveCar(dir) {
@@ -323,9 +321,9 @@
       }
 
       obstacles.forEach(o => o.y += carSpeed);
-      obstacles = obstacles.filter(o => o.y < carCanvas.height + 40);
+      obstacles = obstacles.filter(o => o.y < carCanvasEl.height + 40);
 
-      const carY = carCanvas.height - 70;
+      const carY = carCanvasEl.height - 70;
       const carHitbox = { lane: playerLane, top: carY, bottom: carY + 50 };
 
       for (const o of obstacles) {
@@ -335,22 +333,22 @@
           carCtx.fillStyle = "#ffcc00";
           carCtx.font = "18px Arial";
           carCtx.textAlign = "center";
-          carCtx.fillText("Crash ! Score : " + carScore, carCanvas.width/2, carCanvas.height/2);
+          carCtx.fillText("Crash ! Score : " + carScoreCount, carCanvasEl.width/2, carCanvasEl.height/2);
           return;
         }
       }
 
-      carScore++;
-      document.getElementById("carScore").textContent = "Score : " + carScore;
+      carScoreCount++;
+      carScoreEl.textContent = "Score : " + carScoreCount;
 
       carCtx.fillStyle = "#333";
-      carCtx.fillRect(0, 0, carCanvas.width, carCanvas.height);
+      carCtx.fillRect(0, 0, carCanvasEl.width, carCanvasEl.height);
       carCtx.strokeStyle = "#ffcc00";
       carCtx.setLineDash([10, 10]);
       for (let i = 1; i < laneCount; i++) {
         carCtx.beginPath();
         carCtx.moveTo(i * laneWidth, 0);
-        carCtx.lineTo(i * laneWidth, carCanvas.height);
+        carCtx.lineTo(i * laneWidth, carCanvasEl.height);
         carCtx.stroke();
       }
       carCtx.setLineDash([]);
@@ -366,8 +364,8 @@
     initCar();
 
     // ----- CHATBOT -----
-    const chatBox = document.getElementById("chatBox");
-    const chatInput = document.getElementById("chatInput");
+    const chatBoxEl = document.getElementById("chatBox");
+    const chatInputEl = document.getElementById("chatInput");
     function botReply(msg) {
       msg = msg.toLowerCase();
       if (msg.includes("bonjour") || msg.includes("salut")) return "Salut ! Comment ça va ? 🦁";
@@ -379,22 +377,21 @@
       return "Je ne suis qu'un petit assistant simple, mais je fais de mon mieux !";
     }
     function sendMessage() {
-      const text = chatInput.value.trim();
+      const text = chatInputEl.value.trim();
       if (!text) return;
-      chatBox.innerHTML += `<p class="msg-user"><strong>Toi:</strong> ${text}</p>`;
+      chatBoxEl.innerHTML += `<p class="msg-user"><strong>Toi:</strong> ${text}</p>`;
       const reply = botReply(text);
       setTimeout(() => {
-        chatBox.innerHTML += `<p class="msg-bot"><strong>IA:</strong> ${reply}</p>`;
-        chatBox.scrollTop = chatBox.scrollHeight;
+        chatBoxEl.innerHTML += `<p class="msg-bot"><strong>IA:</strong> ${reply}</p>`;
+        chatBoxEl.scrollTop = chatBoxEl.scrollHeight;
       }, 400);
-      chatInput.value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
+      chatInputEl.value = "";
+      chatBoxEl.scrollTop = chatBoxEl.scrollHeight;
     }
-    chatInput.addEventListener("keypress", function(e) {
+    chatInputEl.addEventListener("keypress", function(e) {
       if (e.key === "Enter") sendMessage();
     });
   </script>
 
 </body>
 </html>
-
