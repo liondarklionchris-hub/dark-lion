@@ -12,54 +12,60 @@
     color: white;
     padding-bottom: 30px;
   }
-  /* Barre du haut */
+  /* Écran de connexion */
+  #loginScreen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100; padding: 20px;
+  }
+  #loginBox {
+    background: rgba(20, 20, 40, 0.9);
+    border: 2px solid #ffcc00;
+    border-radius: 15px;
+    padding: 30px 25px;
+    text-align: center;
+    max-width: 350px;
+    width: 100%;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
+  }
+  #loginBox h1 { color: #ffcc00; font-size: 1.8em; margin-bottom: 8px; text-shadow: 0 0 10px #ffcc00; }
+  #loginBox p.desc { color: #aaa; font-size: 0.9em; margin-bottom: 20px; }
+  #loginBox input {
+    width: 100%; padding: 12px; margin-bottom: 12px;
+    border-radius: 8px; border: 1px solid #ffcc00;
+    background: #1a1a2e; color: white; font-size: 1em;
+  }
+  #loginBox button {
+    width: 100%; padding: 12px; background: #ffcc00; color: #111;
+    border: none; border-radius: 8px; font-weight: bold; font-size: 1em; cursor: pointer;
+  }
+  #loginError { color: #ff5566; font-size: 0.85em; margin-top: 8px; min-height: 18px; }
+  #mainApp { display: none; }
+
   header {
-    background: #16162a;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-bottom: 2px solid #ffcc00;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    background: #16162a; display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-bottom: 2px solid #ffcc00; position: sticky; top: 0; z-index: 10;
   }
   header .left, header .right { display: flex; align-items: center; gap: 12px; }
   header .icon { font-size: 1.3em; cursor: pointer; }
   header .title { font-weight: bold; color: #ffcc00; font-size: 1.1em; }
   #coinCount { background: #1a1a2e; border: 1px solid #ffcc00; border-radius: 20px; padding: 3px 10px; font-size: 0.9em; }
 
-  /* Onglets */
   .tabs {
-    display: flex;
-    background: #16162a;
-    border-bottom: 2px solid #333;
-    position: sticky;
-    top: 52px;
-    z-index: 9;
+    display: flex; background: #16162a; border-bottom: 2px solid #333;
+    position: sticky; top: 52px; z-index: 9;
   }
-  .tab {
-    flex: 1;
-    text-align: center;
-    padding: 12px 0;
-    color: #888;
-    cursor: pointer;
-    font-size: 0.9em;
-  }
+  .tab { flex: 1; text-align: center; padding: 12px 0; color: #888; cursor: pointer; font-size: 0.9em; }
   .tab.active { color: #ffcc00; border-bottom: 3px solid #ffcc00; font-weight: bold; }
 
   .page { display: none; padding: 20px 16px; }
   .page.active { display: block; }
 
   .container {
-    background: rgba(20, 20, 40, 0.8);
-    padding: 30px 20px;
-    border-radius: 15px;
-    border: 2px solid #ffcc00;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
-    max-width: 500px;
-    margin: 0 auto 20px auto;
+    background: rgba(20, 20, 40, 0.8); padding: 30px 20px; border-radius: 15px;
+    border: 2px solid #ffcc00; text-align: center; box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+    max-width: 500px; margin: 0 auto 20px auto;
   }
   .profile-pic {
     width: 130px; height: 130px; border-radius: 50%;
@@ -71,22 +77,8 @@
   p { color: #ccc; line-height: 1.6; margin-top: 15px; }
   a { color: #ffcc00; text-decoration: none; }
 
-  /* Grille de jeux (comme la liste de l'appli) */
-  .game-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  .game-card {
-    background: #16162a;
-    border: 2px solid #ffcc00;
-    border-radius: 12px;
-    padding: 20px 10px;
-    text-align: center;
-    cursor: pointer;
-  }
+  .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 500px; margin: 0 auto; }
+  .game-card { background: #16162a; border: 2px solid #ffcc00; border-radius: 12px; padding: 20px 10px; text-align: center; cursor: pointer; }
   .game-card .emoji { font-size: 2em; }
   .game-card .label { color: #ffcc00; margin-top: 6px; font-size: 0.9em; }
 
@@ -152,6 +144,19 @@
 </head>
 <body>
 
+<!-- ÉCRAN DE CONNEXION -->
+<div id="loginScreen">
+  <div id="loginBox">
+    <h1>🦁 Dark Lion AI</h1>
+    <p class="desc">Connecte-toi avec ton email ou ton numéro pour accéder au site</p>
+    <input type="text" id="loginContact" placeholder="Email ou numéro de téléphone">
+    <input type="text" id="loginName" placeholder="Ton pseudo">
+    <button onclick="handleLogin()">Continuer</button>
+    <p id="loginError"></p>
+  </div>
+</div>
+
+<div id="mainApp">
 <header>
   <div class="left">
     <span class="icon">☰</span>
@@ -171,12 +176,11 @@
   <div class="tab" data-page="contact">Contact</div>
 </div>
 
-<!-- PAGE ACCUEIL -->
 <div class="page active" id="page-accueil">
   <div class="container">
     <img src="profile.jpg" alt="Photo de profil" class="profile-pic">
     <h1>🦁 Dark Lion</h1>
-    <p class="subtitle">Mon univers digital commence ici</p>
+    <p class="subtitle" id="welcomeMsg">Mon univers digital commence ici</p>
     <p>Le début de l'aventure ne fait que commencer</p>
   </div>
   <div class="container">
@@ -185,7 +189,6 @@
   </div>
 </div>
 
-<!-- PAGE JEUX -->
 <div class="page" id="page-jeux">
   <div class="game-grid" id="gameMenu">
     <div class="game-card" data-game="morpion"><div class="emoji">❌</div><div class="label">Morpion</div></div>
@@ -227,7 +230,6 @@
   </div>
 </div>
 
-<!-- PAGE CHAT -->
 <div class="page" id="page-chat">
   <div class="container" style="max-width:600px;">
     <h2>🤖 Assistant IA</h2>
@@ -239,7 +241,6 @@
   </div>
 </div>
 
-<!-- PAGE CONTACT -->
 <div class="page" id="page-contact">
   <div class="container">
     <h2>Contact</h2>
@@ -248,8 +249,42 @@
 </div>
 
 <footer><p>© 2026 Dark Lion — Codé avec Termux</p></footer>
+</div>
 
 <script>
+  // ----- CONNEXION -----
+  function handleLogin() {
+    const contact = document.getElementById("loginContact").value.trim();
+    const name = document.getElementById("loginName").value.trim();
+    const errorEl = document.getElementById("loginError");
+
+    if (!contact || !name) {
+      errorEl.textContent = "Remplis les deux champs pour continuer.";
+      return;
+    }
+    const isEmail = contact.includes("@");
+    const isPhone = /^[0-9+ ]{6,}$/.test(contact);
+    if (!isEmail && !isPhone) {
+      errorEl.textContent = "Entre un email valide ou un numéro de téléphone.";
+      return;
+    }
+
+    localStorage.setItem("darklion_user", JSON.stringify({ contact, name }));
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("mainApp").style.display = "block";
+    document.getElementById("welcomeMsg").textContent = "Bienvenue " + name + " 🦁";
+  }
+
+  window.addEventListener("load", () => {
+    const saved = localStorage.getItem("darklion_user");
+    if (saved) {
+      const user = JSON.parse(saved);
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("mainApp").style.display = "block";
+      document.getElementById("welcomeMsg").textContent = "Bienvenue " + user.name + " 🦁";
+    }
+  });
+
   // ----- NAVIGATION ONGLETS -----
   document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", () => {
@@ -263,7 +298,6 @@
   // ----- MENU JEUX -----
   document.querySelectorAll(".game-card").forEach(card => {
     card.addEventListener("click", () => {
-      document.querySelectorAll(".game-card").forEach(c => c.parentElement).forEach(()=>{});
       document.getElementById("gameMenu").classList.add("hidden");
       document.querySelectorAll("#page-jeux .container").forEach(c => c.classList.add("hidden"));
       document.getElementById("game-" + card.dataset.game).classList.remove("hidden");
