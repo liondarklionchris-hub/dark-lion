@@ -26,8 +26,8 @@
   header .title { font-weight: bold; color: #ffcc00; font-size: 1.1em; }
   #coinCount { background: #1a1a2e; border: 1px solid #ffcc00; border-radius: 20px; padding: 3px 10px; font-size: 0.9em; }
 
-  .tabs { display: flex; background: #16162a; border-bottom: 2px solid #333; position: sticky; top: 52px; z-index: 9; }
-  .tab { flex: 1; text-align: center; padding: 12px 0; color: #888; font-size: 0.85em; }
+  .tabs { display: flex; background: #16162a; border-bottom: 2px solid #333; position: sticky; top: 52px; z-index: 9; overflow-x: auto; }
+  .tab { flex: 1; text-align: center; padding: 12px 4px; color: #888; font-size: 0.8em; white-space: nowrap; }
   .tab.active { color: #ffcc00; border-bottom: 3px solid #ffcc00; font-weight: bold; }
 
   .page { display: none; padding: 20px 16px; }
@@ -80,6 +80,14 @@
 
   footer { text-align: center; color: #666; margin-top: 30px; font-size: 0.85em; }
   .hidden { display: none !important; }
+
+  body.light-theme { background: #f0f0f5; color: #222; }
+  body.light-theme header { background: #fff; border-bottom-color: #d4a900; }
+  body.light-theme .tabs { background: #fff; }
+  body.light-theme .container { background: rgba(255,255,255,0.9); color: #222; }
+  body.light-theme .container p { color: #444; }
+  body.light-theme #chatBox { background: #fff; color: #222; }
+  body.light-theme .game-card { background: #fff; }
 </style>
 </head>
 <body>
@@ -106,6 +114,7 @@
   <div class="tab" onclick="showPage('jeux', this)">🎮 Jeux</div>
   <div class="tab" onclick="showPage('chat', this)">💬 Chat</div>
   <div class="tab" onclick="showPage('contact', this)">Contact</div>
+  <div class="tab" onclick="showPage('parametres', this)">⚙️</div>
 </div>
 
 <div class="page active" id="page-accueil">
@@ -214,6 +223,15 @@
   </div>
 </div>
 
+<div class="page" id="page-parametres">
+  <div class="container">
+    <h2>⚙️ Paramètres</h2>
+    <button class="reset" onclick="changePseudo()">Changer de pseudo</button>
+    <button class="reset" onclick="toggleTheme()">🌓 Thème clair/sombre</button>
+    <button class="back" onclick="logout()">Se déconnecter</button>
+  </div>
+</div>
+
 <footer><p>© 2026 Dark Lion — Codé avec Termux</p></footer>
 </div>
 
@@ -244,6 +262,8 @@
       document.getElementById("welcomeMsg").textContent = "Bienvenue " + user.name + " 🦁";
       userName = user.name;
     }
+    var savedTheme = localStorage.getItem("darklion_theme");
+    if (savedTheme === "light") { lightMode = true; document.body.classList.add("light-theme"); }
     drawBoard();
     initCar();
     init2048();
@@ -556,7 +576,32 @@
     chatBoxEl.scrollTop = chatBoxEl.scrollHeight;
   }
   chatInputEl.addEventListener("keypress", function(e) { if (e.key === "Enter") sendMessage(); });
+
+  var lightMode = false;
+  function changePseudo() {
+    var newName = prompt("Nouveau pseudo :", userName);
+    if (newName && newName.trim()) {
+      userName = newName.trim();
+      var saved = JSON.parse(localStorage.getItem("darklion_user") || "{}");
+      saved.name = userName;
+      localStorage.setItem("darklion_user", JSON.stringify(saved));
+      document.getElementById("welcomeMsg").textContent = "Bienvenue " + userName + " 🦁";
+      alert("Pseudo changé en : " + userName);
+    }
+  }
+  function logout() {
+    if (confirm("Se déconnecter ? Tu devras te reconnecter la prochaine fois.")) {
+      localStorage.removeItem("darklion_user");
+      location.reload();
+    }
+  }
+  function toggleTheme() {
+    lightMode = !lightMode;
+    document.body.classList.toggle("light-theme", lightMode);
+    localStorage.setItem("darklion_theme", lightMode ? "light" : "dark");
+  }
 </script>
 
 </body>
 </html>
+
